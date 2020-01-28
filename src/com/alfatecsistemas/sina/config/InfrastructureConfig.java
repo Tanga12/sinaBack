@@ -28,15 +28,15 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @ComponentScan("com.alfatecsistemas.sina.service")
 @EnableJpaRepositories("com.alfatecsistemas.sina.repository")
 public class InfrastructureConfig {
-	
+
 	@Bean
 	public DataSource dataSource() {
 		EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
 		
 		return builder
         	.setType(EmbeddedDatabaseType.H2)
-        	.addScript("sql/create-db.sql")
-        	.addScript("sql/insert-data.sql")
+        	//.addScript("sql/create-db.sql")
+        	//.addScript("sql/insert-data.sql")
         	.build();
 	}
 
