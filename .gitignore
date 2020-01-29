@@ -1,4 +1,5 @@
 # Default ignored files
+<<<<<<< HEAD
 
 # Maven
 log/
@@ -7,3 +8,13 @@ target/
 .idea/
 *.iml
 *.iw
+=======
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Maven
+log/
+target/
+>>>>>>> 6a58f1998e6b403663a8a8f3b3ef61f6b81db6fa
