@@ -10,7 +10,7 @@ target/
 *.iw
 =======
 # Intellij
-.idea/
+.idea/*
 *.iml
 *.iws
 
