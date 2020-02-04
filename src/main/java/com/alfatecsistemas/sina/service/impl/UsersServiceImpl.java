@@ -1,7 +1,5 @@
 package com.alfatecsistemas.sina.service.impl;
 
-import com.alfatecsistemas.sina.dao.ProfessionalDao;
-import com.alfatecsistemas.sina.domain.OrmaProfessionals;
 import com.alfatecsistemas.sina.domain.SecuUsers;
 import com.alfatecsistemas.sina.repository.UsersRepository;
 import com.alfatecsistemas.sina.service.UsersService;
@@ -18,32 +16,21 @@ public class UsersServiceImpl implements UsersService {
     @Autowired
     private UsersRepository usersRepository;
 
-    @Autowired
-    private ProfessionalDao professionalDao;
-
-    @Override
     public List<SecuUsers> getUsers() {
         return usersRepository.findAll();
     }
 
-    @Override
     public SecuUsers getUser(Integer userId) {
         return usersRepository.findOne(userId);
     }
 
-    public SecuUsers getUserByProfId(Integer profId) {
-        return usersRepository.getUserByProfId(profId);
+    public SecuUsers getUserByName(String name) {
+        return usersRepository.getSecuUsersByUserLogin(name);
     }
 
-    @Override
     public SecuUsers getLogin(String name, String password) {
         String passwordSha1 = EncryptUtils.sha1(password);
         return usersRepository.getLogin(name, passwordSha1);
-    }
-
-    @Override
-    public SecuUsers getUserAndProfessional(Integer userId, Integer profId) {
-        return usersRepository.getUserAndProfessional(userId, profId);
     }
 
     @Override
@@ -63,24 +50,20 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public SecuUsers insertUser(Integer profId, String name, String password) throws Exception {
-        OrmaProfessionals professional = professionalDao.findOne(profId);
-        SecuUsers user = null;
+    public SecuUsers insertUser(Integer userId, String name, String password) throws Exception {
+        SecuUsers user = getUser(userId);
 
-        if (professional == null) {
+        if (user == null) {
             String passwordSha1 = EncryptUtils.sha1(password);
 
             user = new SecuUsers();
-            user.setProfId(profId);
+            user.setProfId(userId);
             user.setUserLogin(name);
             user.setUserPassword(passwordSha1);
-
-            usersRepository.save(user);
         } else {
-            throw new Exception(String.format("The user with profId %s already exists", profId));
+            throw new Exception(String.format("The user with name %s already exists", userId));
         }
-
-        return user;
+        return null;
     }
 
     @Override

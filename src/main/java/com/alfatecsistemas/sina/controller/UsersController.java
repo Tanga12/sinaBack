@@ -22,7 +22,7 @@ public class UsersController {
     @Autowired
     private UsersService usersService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(path = "/all", method = RequestMethod.GET)
     public List<SecuUsers> getUsers() {
         return usersService.getUsers();
     }
@@ -32,23 +32,22 @@ public class UsersController {
         return usersService.getUser(userId);
     }
 
+    @RequestMapping(method = RequestMethod.GET)
+    public SecuUsers getUserByName(@RequestParam String name) {
+        return usersService.getUserByName(name);
+    }
+
     @RequestMapping(path = "/login", method = RequestMethod.GET)
     public SecuUsers getLogin(@RequestBody UserDto user) {
         return usersService.getLogin(user.getName(), user.getPassword());
     }
 
-    @RequestMapping(path = "/{userId}/professionals/{profId}", method = RequestMethod.GET)
-    public SecuUsers getUserAndProfessional(@PathVariable Integer userId, @PathVariable Integer profId) {
-        SecuUsers users = usersService.getUserAndProfessional(userId, profId);
-        return users;
-    }
-
-    @RequestMapping(path = "/{userId}", method = RequestMethod.PUT)
-    public ResponseEntity<SecuUsers> updateUser(@PathVariable Integer userId, @RequestBody UserDto dto) {
+    @RequestMapping(path = "/{profId}", method = RequestMethod.PUT)
+    public ResponseEntity<SecuUsers> updateUser(@PathVariable Integer profId, @RequestBody UserDto dto) {
 
         ResponseEntity response = null;
         try {
-            SecuUsers user = usersService.updateUser(userId, dto.getName(), dto.getPassword());
+            SecuUsers user = usersService.updateUser(profId, dto.getName(), dto.getPassword());
             response = ResponseEntity.ok(user);
         } catch (NotFoundException e) {
             LOGGER.error(e.toString());
@@ -58,11 +57,11 @@ public class UsersController {
         return response;
     }
 
-    @RequestMapping(path = "/{userId}", method = RequestMethod.POST)
-    public ResponseEntity<SecuUsers> insertUser(@PathVariable Integer userId, @RequestBody UserDto dto) {
+    @RequestMapping(path = "/{profId}", method = RequestMethod.POST)
+    public ResponseEntity<SecuUsers> insertUser(@PathVariable Integer profId, @RequestBody UserDto dto) {
         ResponseEntity response = null;
         try {
-            SecuUsers user = usersService.insertUser(userId, dto.getName(), dto.getPassword());
+            SecuUsers user = usersService.insertUser(profId, dto.getName(), dto.getPassword());
             response = ResponseEntity.status(HttpStatus.CREATED).body(user);
         } catch (Exception e) {
             LOGGER.error(e.toString());

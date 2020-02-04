@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface UsersRepository extends JpaRepository<SecuUsers, Integer> {
 
     SecuUsers getSecuUsersByUserLogin(String userLogin);
+    SecuUsers getSecuUsersByProfId(Integer userLogin);
 
     SecuUsers getSecuUsersByProfId(Integer userLogin);
 
